@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>17G65</string>
+	<string>__OS_BUILD__</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<string>__DEV_LANG__</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -13,20 +13,24 @@
 			<string>QLGenerator</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>SUPPORTED_UTI_TYPE</string>
+				<string>__SUPPORTED_UTI_TYPE__</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
+	<string>__PLUGIN_NAME__</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>__PLUGIN__BID__</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>__PLUGIN_NAME__</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>CFPlugInDynamicRegisterFunction</key>
@@ -47,8 +51,6 @@
 	</dict>
 	<key>CFPlugInUnloadFunction</key>
 	<string></string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2019 Lei. All rights reserved.</string>
 	<key>QLNeedsToBeRunInMainThread</key>
 	<false/>
 	<key>QLPreviewHeight</key>
@@ -61,3 +63,4 @@
 	<real>17</real>
 </dict>
 </plist>
+
