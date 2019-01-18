@@ -78,10 +78,12 @@ endif
 CFLAGS+=	-x c \
 		-arch $(ARCH) \
 		-std=c99 \
-		-fno-common \
+		-fmodules \
+		-fno-common
 
 # warnings
-CFLAGS+=	-Wall -Wextra -Os
+CFLAGS+=	-Wall -Os
+#CFLAGS+=	-Wextra
 #CFLAGS+=	-Werror
 
 # linker flags
@@ -92,10 +94,7 @@ LDFLAGS+=	-mmacosx-version-min=10.5
 endif
 LDFLAGS+=	-arch $(ARCH)
 LDFLAGS+=	-Xlinker -object_path_lto \
-		-Xlinker -export_dynamic
-
-# kextlibs flags
-KLFLAGS+=	-xml -c -unsupported -undef-symbols
+		-Xlinker -export_dynamic -bundle
 
 # source, header, object and make files
 SRCS:=		$(wildcard src/*.c)
@@ -133,9 +132,6 @@ $(KEXTBUNDLE): $(KEXTMACHO) Info.plist~
 	mkdir -p $@/Contents/MacOS
 	mv $< $@/Contents/MacOS/$(PLUGIN_NAME)
 
-	# Clear placeholders(o.w. kextlibs cannot parse)
-	sed 's/__KEXTLIBS__//g' Info.plist~ > $@/Contents/Info.plist
-	awk '/__KEXTLIBS__/{system("kextlibs $(KLFLAGS) $@");next};1' Info.plist~ > $@/Contents/Info.plist~
 	mv $@/Contents/Info.plist~ $@/Contents/Info.plist
 
 ifdef COPYRIGHT
