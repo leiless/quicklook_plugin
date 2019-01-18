@@ -132,7 +132,8 @@ $(KEXTBUNDLE): $(KEXTMACHO) Info.plist~
 	mkdir -p $@/Contents/MacOS
 	mv $< $@/Contents/MacOS/$(PLUGIN_NAME)
 
-	mv $@/Contents/Info.plist~ $@/Contents/Info.plist
+	#mv $@/Contents/Info.plist~ $@/Contents/Info.plist
+	mv Info.plist~ $@/Contents/Info.plist
 
 ifdef COPYRIGHT
 	/usr/libexec/PlistBuddy -c 'Add :NSHumanReadableCopyright string "$(COPYRIGHT)"' $@/Contents/Info.plist
@@ -149,7 +150,7 @@ endif
 
 	touch $@
 
-	dsymutil -arch $(ARCH) -o $(PLUGIN_NAME).kext.dSYM $@/Contents/MacOS/$(PLUGIN_NAME)
+	dsymutil -arch $(ARCH) -o $(KEXTBUNDLE).dSYM $@/Contents/MacOS/$(PLUGIN_NAME)
 
 release: $(KEXTBUNDLE)
 
