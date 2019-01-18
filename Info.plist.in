@@ -26,7 +26,7 @@
 	<key>CFBundleName</key>
 	<string>__PLUGIN_NAME__</string>
 	<key>CFBundleShortVersionString</key>
-	<string>__PLUGIN_VER__</string>
+	<string>__PLUGIN_VERSION__</string>
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
 		<string>MacOSX</string>
