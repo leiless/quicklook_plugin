@@ -8,31 +8,31 @@ include Makefile.inc
 #
 # Check mandatory vars
 #
-ifndef KEXTNAME
-$(error KEXTNAME not defined)
+ifndef PLUGIN_NAME
+$(error PLUGIN_NAME not defined)
 endif
 
-ifndef KEXTVERSION
-$(error KEXTVERSION not defined)
+ifndef PLUGIN_VERSION
+$(error PLUGIN_VERSION not defined)
 endif
 
-ifndef KEXTBUILD
+ifndef PLUGIN_BUILD
 # [assume] zero indicates no build number
-KEXTBUILD:=	0
+PLUGIN_BUILD:=	0
 endif
 
-ifndef BUNDLEDOMAIN
-$(error BUNDLEDOMAIN not defined)
+ifndef BUNDLE_DOMAIN
+$(error BUNDLE_DOMAIN not defined)
 endif
 
 
 # defaults
-BUNDLEID?=	$(BUNDLEDOMAIN).kext.$(KEXTNAME)
-KEXTBUNDLE?=	$(KEXTNAME).kext
-KEXTMACHO?=	$(KEXTNAME).out
+BUNDLE_ID?=	$(BUNDLE_DOMAIN).quicklook.$(PLUGIN_NAME)
+KEXTBUNDLE?=	$(PLUGIN_NAME).qlgenerator
+KEXTMACHO?=	$(PLUGIN_NAME).out
 ARCH?=		x86_64
 #ARCH?=		i386
-PREFIX?=	/Library/Extensions
+PREFIX?=	/Library/QuickLook
 
 #
 # Set default macOS SDK
@@ -50,29 +50,22 @@ CODESIGN=	$(shell xcrun -find -sdk $(SDKROOT) codesign)
 #
 # Standard defines and includes for kernel extensions
 #
-# The __kext_makefile__ macro used to compatible with XCode
+# The __ql_makefile__ macro used to compatible with XCode
 # Since XCode use intermediate objects  which causes symbol duplicated
 #
-CPPFLAGS+=	-DKERNEL \
-		-DKERNEL_PRIVATE \
-		-DDRIVER_PRIVATE \
-		-DAPPLE \
-		-DNeXT \
-		$(SDKFLAGS) \
-		-I$(SDKROOT)/System/Library/Frameworks/Kernel.framework/Headers \
-		-I$(SDKROOT)/System/Library/Frameworks/Kernel.framework/PrivateHeaders \
-		-D__kext_makefile__
+CPPFLAGS+=	-D__ql_makefile__ \
+		$(SDKFLAGS)
 
 #
 # Convenience defines
-# BUNDLEID macro will be used in KMOD_EXPLICIT_DECL
+# BUNDLE_ID macro will be used in KMOD_EXPLICIT_DECL
 #
-CPPFLAGS+=	-DKEXTNAME_S=\"$(KEXTNAME)\"		\
-		-DKEXTVERSION_S=\"$(KEXTVERSION)\"	\
-		-DKEXTBUILD_S=\"$(KEXTBUILD)\"		\
-		-DBUNDLEID_S=\"$(BUNDLEID)\"		\
-		-DBUNDLEID=$(BUNDLEID)			\
-		-D__TZ__=\"$(shell date +%z)\"
+CPPFLAGS+=	-DPLUGIN_NAME_S=\"$(PLUGIN_NAME)\"		\
+		-DPLUGIN_VERSION_S=\"$(PLUGIN_VERSION)\"	\
+		-DPLUGIN_BUILD_S=\"$(PLUGIN_BUILD)\"		\
+		-DBUNDLE_ID_S=\"$(BUNDLE_ID)\"		\
+		-DBUNDLE_ID=$(BUNDLE_ID)			\
+		-D__TS__=\"$(shell date +'%Y/%m/%d\ %H:%M:%S%z')\"
 
 #
 # C compiler flags
@@ -80,7 +73,7 @@ CPPFLAGS+=	-DKEXTNAME_S=\"$(KEXTNAME)\"		\
 ifdef MACOSX_VERSION_MIN
 CFLAGS+=	-mmacosx-version-min=$(MACOSX_VERSION_MIN)
 else
-CFLAGS+=	-mmacosx-version-min=10.4
+CFLAGS+=	-mmacosx-version-min=10.5
 endif
 CFLAGS+=	-x c \
 		-arch $(ARCH) \
@@ -88,7 +81,6 @@ CFLAGS+=	-x c \
 		-nostdinc \
 		-fno-builtin \
 		-fno-common \
-		-mkernel
 
 # warnings
 CFLAGS+=	-Wall -Wextra -Werror -Os
@@ -101,21 +93,15 @@ LDFLAGS+=	-mmacosx-version-min=10.4
 endif
 LDFLAGS+=	-arch $(ARCH)
 LDFLAGS+=	-nostdlib \
-		-Xlinker -kext \
 		-Xlinker -object_path_lto \
 		-Xlinker -export_dynamic
-
-# libraries
-LIBS+=		-lkmod
-#LIBS+=		-lkmodc++
-LIBS+=		-lcc_kext
 
 # kextlibs flags
 KLFLAGS+=	-xml -c -unsupported -undef-symbols
 
 # source, header, object and make files
-SRCS:=		$(wildcard $(KEXTNAME)/*.c)
-HDRS:=		$(wildcard $(KEXTNAME)/*.h)
+SRCS:=		$(wildcard src/*.c)
+HDRS:=		$(wildcard src/*.h)
 OBJS:=		$(SRCS:.c=.o)
 MKFS:=		$(wildcard Makefile)
 
@@ -130,24 +116,24 @@ all: debug
 $(OBJS): $(MKFS)
 
 $(KEXTMACHO): $(OBJS)
-	$(CC) $(SDKFLAGS) $(LDFLAGS) $(LIBS) -o $@ $^
+	$(CC) $(SDKFLAGS) $(LDFLAGS) -o $@ $^
 	otool -h $@
 	otool -l $@ | grep uuid
 
 Info.plist~: Info.plist.in
 	sed \
-		-e 's/__KEXTNAME__/$(KEXTNAME)/g' \
-		-e 's/__KEXTMACHO__/$(KEXTNAME)/g' \
-		-e 's/__KEXTVERSION__/$(KEXTVERSION)/g' \
-		-e 's/__KEXTBUILD__/$(KEXTBUILD)/g' \
-		-e 's/__BUNDLEID__/$(BUNDLEID)/g' \
+		-e 's/__PLUGIN_NAME__/$(PLUGIN_NAME)/g' \
+		-e 's/__KEXTMACHO__/$(PLUGIN_NAME)/g' \
+		-e 's/__PLUGIN_VERSION__/$(PLUGIN_VERSION)/g' \
+		-e 's/__PLUGIN_BUILD__/$(PLUGIN_BUILD)/g' \
+		-e 's/__BUNDLE_ID__/$(BUNDLE_ID)/g' \
 		-e 's/__OSBUILD__/$(shell /usr/bin/sw_vers -buildVersion)/g' \
 		-e 's/__CLANGVER__/$(shell $(CC) -v 2>&1 | grep version)/g' \
 	$^ > $@
 
 $(KEXTBUNDLE): $(KEXTMACHO) Info.plist~
 	mkdir -p $@/Contents/MacOS
-	mv $< $@/Contents/MacOS/$(KEXTNAME)
+	mv $< $@/Contents/MacOS/$(PLUGIN_NAME)
 
 	# Clear placeholders(o.w. kextlibs cannot parse)
 	sed 's/__KEXTLIBS__//g' Info.plist~ > $@/Contents/Info.plist
@@ -169,7 +155,7 @@ endif
 
 	touch $@
 
-	dsymutil -arch $(ARCH) -o $(KEXTNAME).kext.dSYM $@/Contents/MacOS/$(KEXTNAME)
+	dsymutil -arch $(ARCH) -o $(PLUGIN_NAME).kext.dSYM $@/Contents/MacOS/$(PLUGIN_NAME)
 
 release: $(KEXTBUNDLE)
 
@@ -184,14 +170,14 @@ load: $(KEXTBUNDLE)
 	sudo kextutil $<
 	# restore original owner:group
 	sudo chown -R '$(USER):$(shell id -gn)' $<
-	sudo dmesg | grep $(KEXTNAME) | tail -1
+	sudo dmesg | grep $(PLUGIN_NAME) | tail -1
 
 stat:
-	kextstat | grep $(KEXTNAME)
+	kextstat | grep $(PLUGIN_NAME)
 
 unload:
 	sudo kextunload $(KEXTBUNDLE)
-	sudo dmesg | grep $(KEXTNAME) | tail -2
+	sudo dmesg | grep $(PLUGIN_NAME) | tail -2
 
 install: $(KEXTBUNDLE) uninstall
 	test -d "$(PREFIX)"

@@ -2,8 +2,8 @@
 # Put user-defined variables here
 #
 
-KEXTNAME=example
-KEXTVERSION=0000.00.01
-KEXTBUILD=0.0.1d1
-BUNDLEDOMAIN=com.example
+PLUGIN_NAME=ExampleQL
+PLUGIN_VERSION=0000.00.01
+PLUGIN_BUILD=0
+BUNDLE_DOMAIN=com.example
 
