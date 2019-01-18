@@ -26,27 +26,27 @@
 	<key>CFBundleName</key>
 	<string>__PLUGIN_NAME__</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>__PLUGIN_VER__</string>
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>__PLUGIN_BUILD__</string>
 	<key>CFPlugInDynamicRegisterFunction</key>
 	<string></string>
 	<key>CFPlugInDynamicRegistration</key>
 	<string>NO</string>
 	<key>CFPlugInFactories</key>
 	<dict>
-		<key>F0D0D546-1444-43A6-8514-2E6B3E1C1434</key>
+		<key>__UUID__</key>
 		<string>QuickLookGeneratorPluginFactory</string>
 	</dict>
 	<key>CFPlugInTypes</key>
 	<dict>
 		<key>5E2D9680-5022-40FA-B806-43349622E5B9</key>
 		<array>
-			<string>F0D0D546-1444-43A6-8514-2E6B3E1C1434</string>
+			<string>__UUID__</string>
 		</array>
 	</dict>
 	<key>CFPlugInUnloadFunction</key>
