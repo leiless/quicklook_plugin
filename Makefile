@@ -78,22 +78,20 @@ endif
 CFLAGS+=	-x c \
 		-arch $(ARCH) \
 		-std=c99 \
-		-nostdinc \
-		-fno-builtin \
 		-fno-common \
 
 # warnings
-CFLAGS+=	-Wall -Wextra -Werror -Os
+CFLAGS+=	-Wall -Wextra -Os
+#CFLAGS+=	-Werror
 
 # linker flags
 ifdef MACOSX_VERSION_MIN
 LDFLAGS+=	-mmacosx-version-min=$(MACOSX_VERSION_MIN)
 else
-LDFLAGS+=	-mmacosx-version-min=10.4
+LDFLAGS+=	-mmacosx-version-min=10.5
 endif
 LDFLAGS+=	-arch $(ARCH)
-LDFLAGS+=	-nostdlib \
-		-Xlinker -object_path_lto \
+LDFLAGS+=	-Xlinker -object_path_lto \
 		-Xlinker -export_dynamic
 
 # kextlibs flags
