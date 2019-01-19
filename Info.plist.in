@@ -4,6 +4,8 @@
 <dict>
 	<key>BuildMachineOSBuild</key>
 	<string>__OS_BUILD__</string>
+	<key>BuildMachineClangVersion</key>
+	<string>__CLANG_VERSION__</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>__DEV_LANG__</string>
 	<key>CFBundleDocumentTypes</key>
@@ -20,7 +22,7 @@
 	<key>CFBundleExecutable</key>
 	<string>__PLUGIN_NAME__</string>
 	<key>CFBundleIdentifier</key>
-	<string>__PLUGIN__BID__</string>
+	<string>__PLUGIN_BID__</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

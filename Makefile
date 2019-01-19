@@ -27,7 +27,7 @@ endif
 
 
 # defaults
-BUNDLE_ID?=		$(BUNDLE_DOMAIN).quicklook.$(PLUGIN_NAME)
+PLUGIN_BID?=		$(BUNDLE_DOMAIN).quicklook.$(PLUGIN_NAME)
 PLUGIN_BUNDLE?=		$(PLUGIN_NAME).qlgenerator
 PLUGIN_MACHO?=		$(PLUGIN_NAME).out
 ARCH?=			x86_64
@@ -58,13 +58,13 @@ CPPFLAGS+=	-D__ql_makefile__ \
 
 #
 # Convenience defines
-# BUNDLE_ID macro will be used in KMOD_EXPLICIT_DECL
+# PLUGIN_BID macro will be used in KMOD_EXPLICIT_DECL
 #
 CPPFLAGS+=	-DPLUGIN_NAME_S=\"$(PLUGIN_NAME)\"		\
 		-DPLUGIN_VERSION_S=\"$(PLUGIN_VERSION)\"	\
 		-DPLUGIN_BUILD_S=\"$(PLUGIN_BUILD)\"		\
-		-DBUNDLE_ID_S=\"$(BUNDLE_ID)\"		\
-		-DBUNDLE_ID=$(BUNDLE_ID)			\
+		-DPLUGIN_BID_S=\"$(PLUGIN_BID)\"		\
+		-DPLUGIN_BID=$(PLUGIN_BID)			\
 		-D__TS__=\"$(shell date +'%Y/%m/%d\ %H:%M:%S%z')\"
 
 #
@@ -122,9 +122,11 @@ Info.plist~: Info.plist.in
 		-e 's/__PLUGIN_NAME__/$(PLUGIN_NAME)/g' \
 		-e 's/__PLUGIN_VERSION__/$(PLUGIN_VERSION)/g' \
 		-e 's/__PLUGIN_BUILD__/$(PLUGIN_BUILD)/g' \
-		-e 's/__BUNDLE_ID__/$(BUNDLE_ID)/g' \
-		-e 's/__OSBUILD__/$(shell /usr/bin/sw_vers -buildVersion)/g' \
-		-e 's/__CLANGVER__/$(shell $(CC) -v 2>&1 | grep version)/g' \
+		-e 's/__PLUGIN_BID__/$(PLUGIN_BID)/g' \
+		-e 's/__OS_BUILD__/$(shell /usr/bin/sw_vers -buildVersion)/g' \
+		-e 's/__CLANG_VERSION__/$(shell $(CC) -v 2>&1 | grep version)/g' \
+		-e 's/__DEV_LANG__/$(shell echo $(LANG) | cut -d'.' -f1)/g' \
+		-e 's/__UUID__/$(shell uuidgen)/g' \
 	$^ > $@
 
 $(PLUGIN_BUNDLE): $(PLUGIN_MACHO) Info.plist~
