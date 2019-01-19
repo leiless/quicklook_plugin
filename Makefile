@@ -27,12 +27,12 @@ endif
 
 
 # defaults
-BUNDLE_ID?=	$(BUNDLE_DOMAIN).quicklook.$(PLUGIN_NAME)
-KEXTBUNDLE?=	$(PLUGIN_NAME).qlgenerator
-KEXTMACHO?=	$(PLUGIN_NAME).out
-ARCH?=		x86_64
-#ARCH?=		i386
-PREFIX?=	/Library/QuickLook
+BUNDLE_ID?=		$(BUNDLE_DOMAIN).quicklook.$(PLUGIN_NAME)
+PLUGIN_BUNDLE?=		$(PLUGIN_NAME).qlgenerator
+PLUGIN_MACHO?=		$(PLUGIN_NAME).out
+ARCH?=			x86_64
+#ARCH?=			i386
+PREFIX?=		/Library/QuickLook
 
 #
 # Set default macOS SDK
@@ -112,7 +112,7 @@ all: debug
 
 $(OBJS): $(MKFS)
 
-$(KEXTMACHO): $(OBJS)
+$(PLUGIN_MACHO): $(OBJS)
 	$(CC) $(SDKFLAGS) $(LDFLAGS) -o $@ $^
 	otool -h $@
 	otool -l $@ | grep uuid
@@ -120,7 +120,6 @@ $(KEXTMACHO): $(OBJS)
 Info.plist~: Info.plist.in
 	sed \
 		-e 's/__PLUGIN_NAME__/$(PLUGIN_NAME)/g' \
-		-e 's/__KEXTMACHO__/$(PLUGIN_NAME)/g' \
 		-e 's/__PLUGIN_VERSION__/$(PLUGIN_VERSION)/g' \
 		-e 's/__PLUGIN_BUILD__/$(PLUGIN_BUILD)/g' \
 		-e 's/__BUNDLE_ID__/$(BUNDLE_ID)/g' \
@@ -128,7 +127,7 @@ Info.plist~: Info.plist.in
 		-e 's/__CLANGVER__/$(shell $(CC) -v 2>&1 | grep version)/g' \
 	$^ > $@
 
-$(KEXTBUNDLE): $(KEXTMACHO) Info.plist~
+$(PLUGIN_BUNDLE): $(PLUGIN_MACHO) Info.plist~
 	mkdir -p $@/Contents/MacOS
 	mv $< $@/Contents/MacOS/$(PLUGIN_NAME)
 
@@ -144,48 +143,28 @@ ifdef SIGNCERT
 	/usr/libexec/PlistBuddy -c 'Add :CFBundleSignature string ????' $@/Contents/Info.plist
 endif
 
-	# Empty-dependency kext cannot be load  so we add one manually
-	/usr/libexec/PlistBuddy -c 'Print OSBundleLibraries' $@/Contents/Info.plist &> /dev/null || \
-		/usr/libexec/PlistBuddy -c 'Add :OSBundleLibraries:com.apple.kpi.bsd string "8.0b1"' $@/Contents/Info.plist
-
 	touch $@
+	dsymutil -arch $(ARCH) -o $(PLUGIN_BUNDLE).dSYM $@/Contents/MacOS/$(PLUGIN_NAME)
 
-	dsymutil -arch $(ARCH) -o $(KEXTBUNDLE).dSYM $@/Contents/MacOS/$(PLUGIN_NAME)
-
-release: $(KEXTBUNDLE)
+release: $(PLUGIN_BUNDLE)
 
 # see: https://www.gnu.org/software/make/manual/html_node/Target_002dspecific.html
 # Those two flags must present at the same time  o.w. debug symbol cannot be generated
 debug: CPPFLAGS += -g -DDEBUG
 debug: release
 
-load: $(KEXTBUNDLE)
-	sudo chown -R root:wheel $<
-	sudo sync
-	sudo kextutil $<
-	# restore original owner:group
-	sudo chown -R '$(USER):$(shell id -gn)' $<
-	sudo dmesg | grep $(PLUGIN_NAME) | tail -1
-
-stat:
-	kextstat | grep $(PLUGIN_NAME)
-
-unload:
-	sudo kextunload $(KEXTBUNDLE)
-	sudo dmesg | grep $(PLUGIN_NAME) | tail -2
-
-install: $(KEXTBUNDLE) uninstall
+install: $(PLUGIN_BUNDLE) uninstall
 	test -d "$(PREFIX)"
 	sudo cp -r $< "$(PREFIX)/$<"
 	sudo chown -R root:wheel "$(PREFIX)/$<"
 
 uninstall:
 	test -d "$(PREFIX)"
-	test -e "$(PREFIX)/$(KEXTBUNDLE)" && \
-	sudo rm -rf "$(PREFIX)/$(KEXTBUNDLE)" || true
+	test -e "$(PREFIX)/$(PLUGIN_BUNDLE)" && \
+	sudo rm -rf "$(PREFIX)/$(PLUGIN_BUNDLE)" || true
 
 clean:
-	rm -rf $(KEXTBUNDLE) $(KEXTBUNDLE).dSYM Info.plist~ $(OBJS) $(KEXTMACHO)
+	rm -rf $(PLUGIN_BUNDLE) $(PLUGIN_BUNDLE).dSYM Info.plist~ $(OBJS) $(PLUGIN_MACHO)
 
-.PHONY: all debug release load stat unload intall uninstall clean
+.PHONY: all debug release intall uninstall clean
 
