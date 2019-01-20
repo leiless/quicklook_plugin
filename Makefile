@@ -57,8 +57,7 @@ CODESIGN=	$(shell xcrun -find -sdk $(SDKROOT) codesign)
 # The __ql_makefile__ macro used to compatible with XCode
 # Since XCode use intermediate objects  which causes symbol duplicated
 #
-CPPFLAGS+=	-D__ql_makefile__ \
-		$(SDKFLAGS)
+CPPFLAGS+=	-D__ql_makefile__
 
 #
 # Convenience defines
@@ -79,7 +78,8 @@ CFLAGS+=	-mmacosx-version-min=$(MACOSX_VERSION_MIN)
 else
 CFLAGS+=	-mmacosx-version-min=10.5
 endif
-CFLAGS+=	-x c \
+CFLAGS+=	$(SDKFLAGS) \
+		-x c \
 		-arch $(ARCH) \
 		-std=c99 \
 		-fmodules \
@@ -96,8 +96,9 @@ LDFLAGS+=	-mmacosx-version-min=$(MACOSX_VERSION_MIN)
 else
 LDFLAGS+=	-mmacosx-version-min=10.5
 endif
-LDFLAGS+=	-arch $(ARCH)
-LDFLAGS+=	-Xlinker -object_path_lto \
+LDFLAGS+=	$(SDKFLAGS) \
+		-arch $(ARCH) \
+		-Xlinker -object_path_lto \
 		-Xlinker -export_dynamic -bundle
 
 # source, header, object and make files
@@ -117,7 +118,7 @@ all: debug
 $(OBJS): $(MKFS)
 
 $(PLUGIN_MACHO): $(OBJS)
-	$(CC) $(SDKFLAGS) $(LDFLAGS) -o $@ $^
+	$(CC) $(LDFLAGS) -o $@ $^
 	otool -h $@
 	otool -l $@ | grep uuid
 
