@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BuildMachineOSBuild</key>
-	<string>__OS_BUILD__</string>
 	<key>BuildMachineClangVersion</key>
 	<string>__CLANG_VERSION__</string>
+	<key>BuildMachineOSBuild</key>
+	<string>__OS_BUILD__</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>__DEV_LANG__</string>
 	<key>CFBundleDocumentTypes</key>
@@ -15,7 +15,6 @@
 			<string>QLGenerator</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>__SUPPORTED_UTI_TYPE__</string>
 			</array>
 		</dict>
 	</array>
@@ -65,4 +64,3 @@
 	<real>17</real>
 </dict>
 </plist>
-
