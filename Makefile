@@ -157,13 +157,11 @@ debug: release
 
 install: $(PLUGIN_BUNDLE) uninstall
 	test -d "$(PREFIX)"
-	sudo cp -r $< "$(PREFIX)/$<"
-	sudo chown -R root:wheel "$(PREFIX)/$<"
+	cp -r $< "$(PREFIX)/$<"
 
 uninstall:
 	test -d "$(PREFIX)"
-	test -e "$(PREFIX)/$(PLUGIN_BUNDLE)" && \
-	sudo rm -rf "$(PREFIX)/$(PLUGIN_BUNDLE)" || true
+	rm -rf "$(PREFIX)/$(PLUGIN_BUNDLE)"
 
 clean:
 	rm -rf $(PLUGIN_BUNDLE) $(PLUGIN_BUNDLE).dSYM Info.plist~ $(OBJS) $(PLUGIN_MACHO)
