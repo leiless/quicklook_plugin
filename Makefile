@@ -25,6 +25,10 @@ ifndef BUNDLE_DOMAIN
 $(error BUNDLE_DOMAIN not defined)
 endif
 
+ifndef PLUGIN_SUPPORTED_UTI
+$(error PLUGIN_SUPPORTED_UTI not defined)
+endif
+
 
 # defaults
 PLUGIN_BID?=		$(BUNDLE_DOMAIN).quicklook.$(PLUGIN_NAME)
@@ -125,7 +129,7 @@ Info.plist~: Info.plist.in
 		-e 's/__PLUGIN_BID__/$(PLUGIN_BID)/g' \
 		-e 's/__OS_BUILD__/$(shell /usr/bin/sw_vers -buildVersion)/g' \
 		-e 's/__CLANG_VERSION__/$(shell $(CC) -v 2>&1 | grep version)/g' \
-		-e 's/__DEV_LANG__/$(shell echo $(LANG) | cut -d'.' -f1)/g' \
+		-e 's/__DEV_LANG__/$(shell echo $$LANG | cut -d'.' -f1)/g' \
 		-e 's/__UUID__/$(shell uuidgen)/g' \
 	$^ > $@
 
@@ -133,7 +137,10 @@ $(PLUGIN_BUNDLE): $(PLUGIN_MACHO) Info.plist~
 	mkdir -p $@/Contents/MacOS
 	mv $< $@/Contents/MacOS/$(PLUGIN_NAME)
 
-	#mv $@/Contents/Info.plist~ $@/Contents/Info.plist
+	for UTI in $(PLUGIN_SUPPORTED_UTI); do \
+		/usr/libexec/PlistBuddy -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:0 string $$UTI" Info.plist~; \
+	done
+
 	mv Info.plist~ $@/Contents/Info.plist
 
 ifdef COPYRIGHT
