@@ -4,6 +4,7 @@
 *.o
 *.out
 *.plist
+*.plist~
 *.qlgenerator/
 *.dSYM/
 *.xcodeproj/

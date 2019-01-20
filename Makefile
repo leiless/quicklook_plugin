@@ -121,7 +121,7 @@ $(PLUGIN_MACHO): $(OBJS)
 	otool -h $@
 	otool -l $@ | grep uuid
 
-Info.plist~: Info.plist.in
+Info.plist: Info.plist.in
 	sed \
 		-e 's/__PLUGIN_NAME__/$(PLUGIN_NAME)/g' \
 		-e 's/__PLUGIN_VERSION__/$(PLUGIN_VERSION)/g' \
@@ -133,15 +133,15 @@ Info.plist~: Info.plist.in
 		-e 's/__UUID__/$(shell uuidgen)/g' \
 	$^ > $@
 
-$(PLUGIN_BUNDLE): $(PLUGIN_MACHO) Info.plist~
+$(PLUGIN_BUNDLE): $(PLUGIN_MACHO) Info.plist
 	mkdir -p $@/Contents/MacOS
 	mv $< $@/Contents/MacOS/$(PLUGIN_NAME)
 
 	for UTI in $(PLUGIN_SUPPORTED_UTI); do \
-		/usr/libexec/PlistBuddy -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:0 string $$UTI" Info.plist~; \
+		/usr/libexec/PlistBuddy -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:0 string $$UTI" Info.plist; \
 	done
 
-	mv Info.plist~ $@/Contents/Info.plist
+	mv Info.plist $@/Contents/Info.plist
 
 ifdef COPYRIGHT
 	/usr/libexec/PlistBuddy -c 'Add :NSHumanReadableCopyright string "$(COPYRIGHT)"' $@/Contents/Info.plist
@@ -171,7 +171,7 @@ uninstall:
 	rm -rf "$(PREFIX)/$(PLUGIN_BUNDLE)"
 
 clean:
-	rm -rf $(PLUGIN_BUNDLE) $(PLUGIN_BUNDLE).dSYM Info.plist~ $(OBJS) $(PLUGIN_MACHO)
+	rm -rf $(PLUGIN_BUNDLE) $(PLUGIN_BUNDLE).dSYM Info.plist $(OBJS) $(PLUGIN_MACHO)
 
 .PHONY: all debug release intall uninstall clean
 
