@@ -80,7 +80,7 @@ else
 CFLAGS+=	-mmacosx-version-min=10.5
 endif
 CFLAGS+=	$(SDKFLAGS) \
-		-x c \
+		-x objective-c \
 		-arch $(ARCH) \
 		-std=c99 \
 		-fmodules \
@@ -103,9 +103,9 @@ LDFLAGS+=	$(SDKFLAGS) \
 		-Xlinker -export_dynamic -bundle
 
 # source, header, object and make files
-SRCS:=		$(wildcard src/*.c)
+SRCS:=		$(wildcard src/*.m)
 HDRS:=		$(wildcard src/*.h)
-OBJS:=		$(SRCS:.c=.o)
+OBJS:=		$(SRCS:.m=.o)
 MKFS:=		$(wildcard Makefile)
 
 
@@ -113,7 +113,7 @@ MKFS:=		$(wildcard Makefile)
 
 all: debug
 
-%.o: %.c $(HDRS)
+%.o: %.m $(HDRS)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 $(OBJS): $(MKFS)
