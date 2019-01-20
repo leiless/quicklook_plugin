@@ -16,10 +16,8 @@ ifndef PLUGIN_VERSION
 $(error PLUGIN_VERSION not defined)
 endif
 
-ifndef PLUGIN_BUILD
 # [assume] zero indicates no build number
-PLUGIN_BUILD:=	0
-endif
+PLUGIN_BUILD?=	0
 
 ifndef BUNDLE_DOMAIN
 $(error BUNDLE_DOMAIN not defined)
@@ -46,10 +44,10 @@ PREFIX?=		/Library/QuickLook
 #
 SDKROOT?=	$(shell xcrun --sdk macosx --show-sdk-path)
 
-SDKFLAGS=	-isysroot $(SDKROOT)
-CC=		$(shell xcrun -find -sdk $(SDKROOT) cc)
-#CXX=		$(shell xcrun -find -sdk $(SDKROOT) c++)
-CODESIGN=	$(shell xcrun -find -sdk $(SDKROOT) codesign)
+SDKFLAGS:=	-isysroot $(SDKROOT)
+CC:=		$(shell xcrun -find -sdk $(SDKROOT) cc)
+#CXX:=		$(shell xcrun -find -sdk $(SDKROOT) c++)
+CODESIGN:=	$(shell xcrun -find -sdk $(SDKROOT) codesign)
 
 #
 # Standard defines and includes for kernel extensions
@@ -68,7 +66,11 @@ CPPFLAGS+=	-DPLUGIN_NAME_S=\"$(PLUGIN_NAME)\"		\
 		-DPLUGIN_BUILD_S=\"$(PLUGIN_BUILD)\"		\
 		-DPLUGIN_BID_S=\"$(PLUGIN_BID)\"		\
 		-DPLUGIN_BID=$(PLUGIN_BID)			\
-		-D__TS__=\"$(shell date +'%Y/%m/%d\ %H:%M:%S%z')\"
+
+PLUGIN_ID:=	$(shell uuidgen)
+TIME_STAMP:=	$(shell date +'%Y/%m/%d\ %H:%M:%S%z')
+CPPFLAGS+=	-D__TS__=\"$(TIME_STAMP)\" \
+		-DPLUGIN_ID=\"$(PLUGIN_ID)\"
 
 #
 # C compiler flags
