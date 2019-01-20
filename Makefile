@@ -64,8 +64,7 @@ CPPFLAGS+=	-D__ql_makefile__
 CPPFLAGS+=	-DPLUGIN_NAME_S=\"$(PLUGIN_NAME)\"		\
 		-DPLUGIN_VERSION_S=\"$(PLUGIN_VERSION)\"	\
 		-DPLUGIN_BUILD_S=\"$(PLUGIN_BUILD)\"		\
-		-DPLUGIN_BID_S=\"$(PLUGIN_BID)\"		\
-		-DPLUGIN_BID=$(PLUGIN_BID)			\
+		-DPLUGIN_BID_S=\"$(PLUGIN_BID)\"
 
 PLUGIN_ID:=	$(shell uuidgen)
 TIME_STAMP:=	$(shell date +'%Y/%m/%d\ %H:%M:%S%z')
