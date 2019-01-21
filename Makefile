@@ -32,8 +32,7 @@ endif
 PLUGIN_BID?=		$(BUNDLE_DOMAIN).quicklook.$(PLUGIN_NAME)
 PLUGIN_BUNDLE?=		$(PLUGIN_NAME).qlgenerator
 PLUGIN_MACHO?=		$(PLUGIN_NAME).out
-ARCH?=			x86_64
-#ARCH?=			i386
+ARCHFLAGS?=		-arch x86_64 -arch i386
 PREFIX?=		/Library/QuickLook
 
 #
@@ -80,8 +79,8 @@ else
 CFLAGS+=	-mmacosx-version-min=10.5
 endif
 CFLAGS+=	$(SDKFLAGS) \
+		$(ARCHFLAGS) \
 		-x objective-c \
-		-arch $(ARCH) \
 		-std=c99 \
 		-fmodules \
 		-fno-common
@@ -98,7 +97,7 @@ else
 LDFLAGS+=	-mmacosx-version-min=10.5
 endif
 LDFLAGS+=	$(SDKFLAGS) \
-		-arch $(ARCH) \
+		$(ARCHFLAGS) \
 		-Xlinker -object_path_lto \
 		-Xlinker -export_dynamic -bundle
 
@@ -155,7 +154,7 @@ ifdef SIGNCERT
 endif
 
 	touch $@
-	dsymutil -arch $(ARCH) -o $(PLUGIN_BUNDLE).dSYM $@/Contents/MacOS/$(PLUGIN_NAME)
+	dsymutil $(ARCHFLAGS) -o $(PLUGIN_BUNDLE).dSYM $@/Contents/MacOS/$(PLUGIN_NAME)
 
 release: $(PLUGIN_BUNDLE)
 
