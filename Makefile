@@ -31,7 +31,7 @@ endif
 # defaults
 PLUGIN_BID?=		$(BUNDLE_DOMAIN).quicklook.$(PLUGIN_NAME)
 PLUGIN_BUNDLE?=		$(PLUGIN_NAME).qlgenerator
-PLUGIN_MACHO?=		$(PLUGIN_NAME).out
+PLUGIN_MACHO?=		$(PLUGIN_NAME)
 ARCHFLAGS?=		-arch x86_64 -arch i386
 PREFIX?=		/Library/QuickLook
 
@@ -163,9 +163,9 @@ release: $(PLUGIN_BUNDLE)
 debug: CPPFLAGS += -g -DDEBUG
 debug: release
 
-install: $(PLUGIN_BUNDLE) uninstall
+install: release uninstall
 	test -d "$(PREFIX)"
-	cp -r $< "$(PREFIX)/$<"
+	cp -r $(PLUGIN_BUNDLE) "$(PREFIX)/$(PLUGIN_BUNDLE)"
 
 uninstall:
 	test -d "$(PREFIX)"
