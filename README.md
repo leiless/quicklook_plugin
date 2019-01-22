@@ -1,6 +1,6 @@
 ## *ExampleQL* - Makefile for macOS Quick Look plugin
 
-*ExampleQL* is a Makefile for macOS Quick Look plugin, without Xcode project intervention.
+*ExampleQL* is a Makefile for a barebone Quick Look plugin, without Xcode project intervention.
 
 ### Mandatory variables
 
@@ -49,7 +49,7 @@ For a full list of optional variables, please check `Makefile`
 ### Compile and test
 
 ```
-# Use release target for release build
+# Use release target for release build; default is debug
 $ make
 
 $ mkdir -p ~/Library/QuickLook
@@ -64,6 +64,8 @@ $ qlmanage -m plugins | grep ExampleQL
 ```
 
 In side `Finder`, open a directory with supported-UTI files, so your  Quick Look plugin can be invoked to generate thumbnail/preview
+
+Alternatively, you can use [qlmanage(1)](x-man-page://1/qlmanage) command line utility to generate thumbnail/preview manually
 
 ### Debugging
 
@@ -86,9 +88,17 @@ $ PREFIX=~/Library/QuickLook make install
 $ PREFIX=~/Library/QuickLook make uninstall
 ```
 
+### Caveats
+
+This Quick Look plugin was written in Objective-C, previously its template code was written in C.
+
+Since Objective-C loosely compatible with C, in most cases, you should have no hesitation migrate from C to Objective-C.
+
 ### *References*
 
 [Introduction to Quick Look Programming Guide](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Quicklook_Programming_Guide/Introduction/Introduction.html)
+
+[Debugging and Testing a Generator](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Quicklook_Programming_Guide/Articles/QLDebugTest.html)
 
 [Quick Look plugins](https://github.com/sindresorhus/quick-look-plugins)
 
