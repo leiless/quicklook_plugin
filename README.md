@@ -2,6 +2,8 @@
 
 *ExampleQL* is a Makefile for a barebone Quick Look plugin, without Xcode project intervention.
 
+Build successfully in macOS [10.10, 10.14]
+
 ### Mandatory variables
 
 You must define at least following Makefile variables in ```Makefile.inc```
@@ -93,6 +95,10 @@ $ PREFIX=~/Library/QuickLook make uninstall
 This Quick Look plugin was written in Objective-C, previously its template code was written in C.
 
 Since Objective-C loosely compatible with C, in most cases, you should have no hesitation migrate from C to Objective-C.
+
+Mojave(10.14) is the last macOS release to support 32-bit apps. Apple LLVM 10.0.0 and above don't support `i386` architecture, thus you should eliminate `-arch i386` in `ARCHFLAGS`.
+
+Also, Apple LLVM 10.0.0 and above drop library linkage with `gcc_s.10.5`(need confirmation), you should specify `MACOSX_VERSION_MIN=10.6` before make(or declare it in `Makefile.inc`)
 
 ### *References*
 
