@@ -48,7 +48,7 @@ SIGNCERT
 
 For a full list of optional variables, please check `Makefile`
 
-### Compile and test
+### Compile & load
 
 ```
 # Use release target for release build; default is debug
@@ -69,14 +69,17 @@ In side `Finder`, open a directory with supported-UTI files, so your  Quick Look
 
 Alternatively, you can use [qlmanage(1)](x-man-page://1/qlmanage) command line utility to generate thumbnail/preview manually
 
-### Debugging
+### Debugging & test
 
 ```
 # for macOS >= 10.12
 $ log stream --style compact --predicate 'process == "QuickLookSatellite" AND  sender == "ExampleQL"'
 
-# for macOS < 10.12  XXX: TODO
+# for macOS < 10.12
+$ syslog -w 0 -k Sender QuickLookSatellite -k Message S ExampleQL
 ```
+
+Please check [Debugging and Testing a Generator](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Quicklook_Programming_Guide/Articles/QLDebugTest.html) for a comprehensive debugging tips.
 
 ### Install/uninstall
 
@@ -103,8 +106,6 @@ Also, Apple LLVM 10.0.0 and above drop library linkage with `gcc_s.10.5`(need co
 ### *References*
 
 [Introduction to Quick Look Programming Guide](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Quicklook_Programming_Guide/Introduction/Introduction.html)
-
-[Debugging and Testing a Generator](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Quicklook_Programming_Guide/Articles/QLDebugTest.html)
 
 [Quick Look plugins](https://github.com/sindresorhus/quick-look-plugins)
 
