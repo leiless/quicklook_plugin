@@ -131,7 +131,7 @@ Info.plist: Info.plist.in
 		-e 's/__OS_BUILD__/$(shell /usr/bin/sw_vers -buildVersion)/g' \
 		-e 's/__CLANG_VERSION__/$(shell $(CC) -v 2>&1 | grep version)/g' \
 		-e 's/__DEV_LANG__/$(shell echo $$LANG | cut -d'.' -f1)/g' \
-		-e 's/__UUID__/$(shell uuidgen)/g' \
+		-e 's/__UUID__/$(PLUGIN_ID)/g' \
 	$^ > $@
 
 $(PLUGIN_BUNDLE): $(PLUGIN_MACHO) Info.plist
