@@ -15,8 +15,23 @@ OSStatus GeneratePreviewForURL(
         CFDictionaryRef options)
 {
     AUTORELEASEPOOL_BEGIN
+
+    /* Alternatively [NSDictionary dictionary] */
+    NSDictionary *previewProperties = nil;
+
+    if (QLPreviewRequestIsCancelled(preview)) goto out_exit;
+
     LOG("%s() called", __func__);
+
+    QLPreviewRequestSetURLRepresentation(
+        preview,
+        url,
+        kUTTypePlainText,
+        (__bridge CFDictionaryRef) previewProperties
+    );
+
     AUTORELEASEPOOL_END
+out_exit:
     return noErr;
 }
 
@@ -27,6 +42,9 @@ void CancelPreviewGeneration(
         void *thisInterface,
         QLPreviewRequestRef preview)
 {
-
+    AUTORELEASEPOOL_BEGIN
+    uint16_t rid = ((uint64_t) preview) & 0xffff;
+    LOG_DBG("Preview %#x cancelled", rid);
+    AUTORELEASEPOOL_END
 }
 

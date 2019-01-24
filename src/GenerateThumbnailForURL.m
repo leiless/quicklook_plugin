@@ -16,8 +16,28 @@ OSStatus GenerateThumbnailForURL(
         CGSize maxSize)
 {
     AUTORELEASEPOOL_BEGIN
+
+    /* Alternatively [NSDictionary dictionary] */
+    NSDictionary *previewProperties = nil;
+    NSString *badge = [@"example" uppercaseString];
+    NSDictionary *properties = @{
+        (NSString *) kQLThumbnailPropertyExtensionKey : badge
+    };
+
+    if (QLThumbnailRequestIsCancelled(thumbnail)) goto out_exit;
+
     LOG(@"%s() called", __func__);
+
+    QLThumbnailRequestSetThumbnailWithURLRepresentation(
+        thumbnail,
+        url,
+        kUTTypePlainText,
+        (__bridge CFDictionaryRef) previewProperties,
+        (__bridge CFDictionaryRef) properties
+    );
+
     AUTORELEASEPOOL_END
+out_exit:
     return noErr;
 }
 
@@ -28,6 +48,9 @@ void CancelThumbnailGeneration(
         void *thisInterface,
         QLThumbnailRequestRef thumbnail)
 {
-
+    AUTORELEASEPOOL_BEGIN
+    uint16_t rid = ((uint64_t) thumbnail) & 0xffff;
+    LOG_DBG("Thumbnail %#x cancelled", rid);
+    AUTORELEASEPOOL_END
 }
 
