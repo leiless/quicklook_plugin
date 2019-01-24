@@ -19,7 +19,6 @@ OSStatus GenerateThumbnailForURL(
     return noErr;
 }
 
-
 /*
  * Implement only if supported
  */
