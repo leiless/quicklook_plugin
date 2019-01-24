@@ -15,5 +15,8 @@
 #define LOG_DBG(fmt, ...)   (void) (0, ##__VA_ARGS__)
 #endif
 
+#define AUTORELEASEPOOL_BEGIN   @autoreleasepool {
+#define AUTORELEASEPOOL_END     }
+
 #endif	/* UTILS_H */
 

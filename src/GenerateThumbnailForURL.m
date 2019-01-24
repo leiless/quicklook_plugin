@@ -15,7 +15,9 @@ OSStatus GenerateThumbnailForURL(
         CFDictionaryRef options,
         CGSize maxSize)
 {
+    AUTORELEASEPOOL_BEGIN
     LOG(@"%s() called", __func__);
+    AUTORELEASEPOOL_END
     return noErr;
 }
 

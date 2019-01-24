@@ -14,7 +14,9 @@ OSStatus GeneratePreviewForURL(
         CFStringRef contentTypeUTI,
         CFDictionaryRef options)
 {
+    AUTORELEASEPOOL_BEGIN
     LOG("%s() called", __func__);
+    AUTORELEASEPOOL_END
     return noErr;
 }
 
