@@ -53,7 +53,7 @@
 	<key>CFPlugInUnloadFunction</key>
 	<string></string>
 	<key>QLNeedsToBeRunInMainThread</key>
-	<false/>
+	<true/>
 	<key>QLPreviewHeight</key>
 	<real>600</real>
 	<key>QLPreviewWidth</key>
