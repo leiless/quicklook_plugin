@@ -164,7 +164,7 @@ debug: CPPFLAGS += -g -DDEBUG
 debug: release
 
 install: release uninstall
-	test -d "$(PREFIX)"
+	mkdir -p "$(PREFIX)"
 	cp -r $(PLUGIN_BUNDLE) "$(PREFIX)/$(PLUGIN_BUNDLE)"
 
 uninstall:
