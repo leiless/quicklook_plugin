@@ -2,7 +2,8 @@
 
 *ExampleQL* is a Makefile for a barebone Quick Look plugin, without Xcode project intervention.
 
-Build successfully in macOS [10.10, 10.14]
+Theoretically, this plugin can be run in macOS >= 10.5, yet only tested in macOS [10.10, 10.14]
+If you tested it under macOS 10.10, please let me know
 
 ### Mandatory variables
 
