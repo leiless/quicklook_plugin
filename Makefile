@@ -168,7 +168,6 @@ install: release uninstall
 	cp -r $(PLUGIN_BUNDLE) "$(PREFIX)/$(PLUGIN_BUNDLE)"
 
 uninstall:
-	test -d "$(PREFIX)"
 	rm -rf "$(PREFIX)/$(PLUGIN_BUNDLE)"
 
 clean:
