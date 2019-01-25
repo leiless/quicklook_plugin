@@ -166,6 +166,8 @@ debug: release
 install: release uninstall
 	mkdir -p "$(PREFIX)"
 	cp -r $(PLUGIN_BUNDLE) "$(PREFIX)/$(PLUGIN_BUNDLE)"
+	qlmanage -r cache
+	qlmanage -r
 
 uninstall:
 	rm -rf "$(PREFIX)/$(PLUGIN_BUNDLE)"
