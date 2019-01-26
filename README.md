@@ -17,7 +17,7 @@ PLUGIN_VERSION
 PLUGIN_BUILD
 
 # Reversed domain  Example: com.example
-BUNDLE_DOMAIN	
+BUNDLE_DOMAIN
 
 # Supported UTI types to generate preview/thumbnail
 PLUGIN_SUPPORTED_UTI
@@ -115,3 +115,4 @@ Also, Apple LLVM 10.0.0 and above drop library linkage with `gcc_s.10.5`(need co
 ---
 
 *Created 190121*
+
