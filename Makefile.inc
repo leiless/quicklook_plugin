@@ -9,6 +9,7 @@ BUNDLE_DOMAIN=com.example
 #
 # Supported UTI types(use space to separate each one)
 # Do NOT use any quote character
+# NOTE: use mdls(1) to fetch kMDItemContentType info
 #
 # .example dynamic UTI
 #

@@ -52,14 +52,20 @@
 	</dict>
 	<key>CFPlugInUnloadFunction</key>
 	<string></string>
+	<!-- Change following property to <true/> if the generators needs
+		to be run on main thread. -->
 	<key>QLNeedsToBeRunInMainThread</key>
 	<true/>
-	<key>QLPreviewHeight</key>
-	<real>600</real>
-	<key>QLPreviewWidth</key>
-	<real>800</real>
+	<!-- Change following property to <true/> if the generators
+		supports multiple concurrent requests. -->
 	<key>QLSupportsConcurrentRequests</key>
 	<false/>
+	<!-- Change following properties to indicate the preview size to use
+		if preview generation takes too long. -->
+	<key>QLPreviewWidth</key>
+	<real>800</real>
+	<key>QLPreviewHeight</key>
+	<real>600</real>
 	<key>QLThumbnailMinimumSize</key>
 	<real>16</real>
 </dict>

@@ -99,7 +99,8 @@ endif
 LDFLAGS+=	$(SDKFLAGS) \
 		$(ARCHFLAGS) \
 		-Xlinker -object_path_lto \
-		-Xlinker -export_dynamic -bundle
+		-Xlinker -export_dynamic \
+		-bundle
 
 # source, header, object and make files
 SRCS:=		$(wildcard src/*.m)
@@ -168,9 +169,12 @@ install: release uninstall
 	cp -r $(PLUGIN_BUNDLE) "$(PREFIX)/$(PLUGIN_BUNDLE)"
 	qlmanage -r cache
 	qlmanage -r
+	qlmanage -m | grep -w $(PLUGIN_NAME)
 
 uninstall:
 	rm -rf "$(PREFIX)/$(PLUGIN_BUNDLE)"
+	qlmanage -r cache
+	qlmanage -r
 
 clean:
 	rm -rf $(PLUGIN_BUNDLE) $(PLUGIN_BUNDLE).dSYM Info.plist $(OBJS) $(PLUGIN_MACHO)
