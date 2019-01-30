@@ -104,19 +104,14 @@ LDFLAGS+=	$(SDKFLAGS) \
 
 # source, header, object and make files
 SRCS:=		$(wildcard src/*.m)
-HDRS:=		$(wildcard src/*.h)
 OBJS:=		$(SRCS:.m=.o)
-MKFS:=		$(wildcard Makefile)
 
 
 # targets
-
 all: debug
 
-%.o: %.m $(HDRS)
+%.o: %.m
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
-
-$(OBJS): $(MKFS)
 
 $(PLUGIN_MACHO): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^
