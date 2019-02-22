@@ -79,7 +79,7 @@ Alternatively, you can use [qlmanage(1)](x-man-page://1/qlmanage) command line u
 
 ```
 # for macOS >= 10.12
-$ log stream --style compact --predicate 'process == "QuickLookSatellite" AND  sender == "ExampleQL"'
+$ log stream --style compact --predicate 'process == "QuickLookSatellite" AND eventMessage CONTAINS "ExampleQL"'
 
 # for macOS < 10.12
 $ syslog -w 0 -k Sender QuickLookSatellite -k Message S ExampleQL
