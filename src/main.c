@@ -21,8 +21,8 @@
 //  constants
 // -----------------------------------------------------------------------------
 
-// Don't modify this line
 #ifndef PLUGIN_ID
+// Don't modify this line
 #define PLUGIN_ID "00000000-0000-0000-0000-000000000000"
 #endif
 
