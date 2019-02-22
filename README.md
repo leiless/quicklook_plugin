@@ -107,7 +107,12 @@ $ PREFIX=~/Library/QuickLook make uninstall
 
 * Mojave(10.14) is the last macOS release to support 32-bit apps, Apple LLVM 10.0.0 and above don't support `i386` architecture, thus you should eliminate `-arch i386` in `ARCHFLAGS` for 10.14 and above.
 
-* Apple LLVM 10.0.0 and above drop library linkage with `gcc_s.10.5`(need confirmation), you should specify `MACOSX_VERSION_MIN=10.6` before make(or declare it in `Makefile.inc`)
+  Apple LLVM 10.0.0 and above drop library linkage with `gcc_s.10.5`(need confirmation), you should specify `MACOSX_VERSION_MIN=10.6` before make(or declare it in `Makefile.inc`)
+
+  ```shell
+  # Make example for macOS 10.14 Mojave and above
+  $ MACOSX_VERSION_MIN=10.6 ARCHFLAGS="-arch x86_64" make [release]
+  ```
 
 <br>
 
