@@ -58,17 +58,17 @@ For a full list of optional variables, please check `Makefile`
 
 ```
 # Use `release' target for release build; default is `debug'
-$ make
+make
 
-$ mkdir -p ~/Library/QuickLook
-$ cp -r ExampleQL.qlgenerator ~/Library/QuickLook
+mkdir -p ~/Library/QuickLook
+cp -r ExampleQL.qlgenerator ~/Library/QuickLook
 
 # Reset Quick Look Server
-$ qlmanage -r cache
-$ qlmanage -r
+qlmanage -r cache
+qlmanage -r
 
-# Check loaded Quick Look plugins
-$ qlmanage -m plugins | grep ExampleQL
+# Check if this Quick Look loaded
+qlmanage -m plugins | grep ExampleQL
 ```
 
 In side `Finder`, open a directory with supported-UTI files, so your  Quick Look plugin can be invoked to generate thumbnail/preview.
@@ -78,11 +78,14 @@ Alternatively, you can use [qlmanage(1)](x-man-page://1/qlmanage) command line u
 ### Debugging & test
 
 ```
+# for macOS >= 10.13
+log stream --style compact --predicate 'process == "QuickLookSatellite" AND eventMessage CONTAINS "ManPageQL"' --color=auto
+
 # for macOS >= 10.12
-$ log stream --style compact --predicate 'process == "QuickLookSatellite" AND eventMessage CONTAINS "ExampleQL"'
+log stream --style compact --predicate 'process == "QuickLookSatellite" AND eventMessage CONTAINS "ExampleQL"'
 
 # for macOS < 10.12
-$ syslog -w 0 -k Sender QuickLookSatellite -k Message S ExampleQL
+syslog -w 0 -k Sender QuickLookSatellite -k Message S ExampleQL
 ```
 
 Please check [Debugging and Testing a Generator](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Quicklook_Programming_Guide/Articles/QLDebugTest.html) for a comprehensive debugging tips.
@@ -90,13 +93,13 @@ Please check [Debugging and Testing a Generator](https://developer.apple.com/lib
 ### Install/uninstall
 
 ```
-# Install/Uninstall Quick Look plugin for all users
-$ sudo make install
-$ sudo make uninstall
-
 # Install/uninstall Quick Look plugin for current user
-$ PREFIX=~/Library/QuickLook make install
-$ PREFIX=~/Library/QuickLook make uninstall
+make install
+make uninstall
+
+# Install/uninstall Quick Look plugin for all users
+PREFIX=/Library/QuickLook sudo make install
+PREFIX=/Library/QuickLook sudo make uninstall
 ```
 
 ### Caveats
@@ -111,7 +114,7 @@ $ PREFIX=~/Library/QuickLook make uninstall
 
   ```shell
   # Make example for macOS 10.14 Mojave and above
-  $ MACOSX_VERSION_MIN=10.6 ARCHFLAGS="-arch x86_64" make [release]
+  MACOSX_VERSION_MIN=10.6 ARCHFLAGS="-arch x86_64" make [release]
   ```
 
 <br>
