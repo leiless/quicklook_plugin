@@ -79,7 +79,7 @@ Alternatively, you can use [qlmanage(1)](x-man-page://1/qlmanage) command line u
 
 ```
 # for macOS >= 10.13
-log stream --style compact --predicate 'process == "QuickLookSatellite" AND eventMessage CONTAINS "ManPageQL"' --color=auto
+log stream --style compact --predicate 'process == "QuickLookSatellite" AND eventMessage CONTAINS "ExampleQL"' --color=auto
 
 # for macOS >= 10.12
 log stream --style compact --predicate 'process == "QuickLookSatellite" AND eventMessage CONTAINS "ExampleQL"'
